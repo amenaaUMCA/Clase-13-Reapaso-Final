@@ -43,14 +43,13 @@ def ingresar_ventas():
             print("Guardando ventas en ventas.csv...")
 
             print("\n-- Ticket de Venta --")
+            print(f"Cliente: {Ventas[0]['Cliente']} | Fecha: {Ventas[0]['Fecha']} ")
             for venta in Ventas:
-                print(f"Producto: {venta['Producto']}")
-                print(f"Cantidad: {venta['Cantidad']}")
-                print(f"Precio: ${venta['Precio']:.2f}")
-                print(f"Fecha: {venta['Fecha']}")
-                print(f"Cliente: {venta['Cliente']}")
+                # Imprime los detalles de cada venta ingresada en un sola linea con formato de ticket
                 print("-" * 30)
-
+                print(
+                    f"Producto: {venta['Producto']} | Cantidad: {venta['Cantidad']} | Precio: ${venta['Precio']:.2f}"
+                )
             subtotal = sum(
                 v["Cantidad"] * v["Precio"] for v in Ventas
             )  # Calcula el subtotal sumando el precio total de cada venta (cantidad * precio)
