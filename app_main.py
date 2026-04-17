@@ -1,4 +1,6 @@
 import os
+from gestion_ventas import ingresar_ventas
+from analis_ventas import analizar_ventas
 
 
 def limpiar_pantalla():
@@ -20,9 +22,9 @@ def menu():
 
         opcion = input("Seleccione una opción: ")
         if opcion == "1":
-            pass
+            ingresar_ventas()
         elif opcion == "2":
-            pass
+            analizar_ventas()
         elif opcion == "3":
             print("¡Gracias por usar el sistema de gestión de ventas! ¡Hasta luego! 👋")
             break
