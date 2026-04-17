@@ -1,4 +1,6 @@
 from datetime import date
+import csv
+import pandas as pd
 
 
 def ingresar_ventas():
@@ -40,8 +42,11 @@ def ingresar_ventas():
         Ventas.append(venta)
         continuar = input("¿Desea ingresar otra venta? (s/n): ").lower()
         if continuar != "s":
-            print("Guardando ventas en ventas.csv...")
-
+            if not guardar_ventas(Ventas):
+                print(
+                    "❌ Error al guardar las ventas INGRESE NUEVAMENTE LOS PRODUCTOS."
+                )
+                break
             print("\n-- Ticket de Venta --")
             print(f"Cliente: {Ventas[0]['Cliente']} | Fecha: {Ventas[0]['Fecha']} ")
             for venta in Ventas:
@@ -62,5 +67,41 @@ def ingresar_ventas():
             break
 
 
+def guardar_ventas(Ventas):
+    """ "Función para guardar las ventas en un archivo CSV."""
+    ARCHIVO_CSV = "ventas.csv"
+    if not (Ventas):
+        print("No hay ventas para guardar.")
+        return False
+    try:
+        # Abrir el archivo CSV en modo escritura y guardar las ventas utilizando csv.DictWriter
+        with open(ARCHIVO_CSV, mode="a", newline="", encoding="utf-8") as archivo:
+            campos = ["Producto", "Cantidad", "Precio", "Fecha", "Cliente"]
+            writer = csv.DictWriter(archivo, fieldnames=campos)
+            if archivo.tell() == 0:  # Si el archivo está vacío, escribir la cabecera
+                writer.writeheader()
+            for venta in Ventas:
+                writer.writerow(venta)
+            print(f"Ventas guardadas exitosamente en {ARCHIVO_CSV}.")
+            return True
+    except Exception as e:
+        print(f"Error al guardar las ventas en el archivo CSV: {e}")
+        return False
+
+
+def cargar_ventas(archivo_csv="ventas.csv"):
+    """Funciónn para cargar las ventas desde un archivo CSV."""
+    try:
+        ventas = pd.read_csv(archivo_csv)
+        print(f"Se cargaron {len(ventas)} registros desde {archivo_csv}.")
+        return ventas
+    except FileNotFoundError:
+        print(f"❌ El archivo {archivo_csv} no se encontró.")
+        return []
+    except Exception as e:
+        print(f"Error al cargar las ventas desde el archivo CSV: {e}")
+        return None
+
+
 if __name__ == "__main__":
-    ingresar_ventas()
+    print(cargar_ventas())
